@@ -1,7 +1,4 @@
-# SmartBank KYC & Customer Management System
-
-This is a simple banking application backend built using **Python**, **Django**, and **Django-Ninja**. It allows customer registration, KYC document upload, and verification, along with audit logging of actions.
-
+# SmartBank Modular Banking Backend System UseCase-1(Customer SignUp)
 ---
 
 ## Technologies Used
@@ -71,7 +68,6 @@ Registers a new customer.
   "pincode": "123456"
 }
 
-### 1. `POST /upload/kyc/
-Upload a KYC document for the authenticated customer.  
 
-**Authentication:** JWT required.  
+
+
