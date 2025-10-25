@@ -9,11 +9,11 @@ Customer enters information like full name, date of birth, address, phone number
 
 **Upload KYC documents
 **
-Customer uploads documents like Aadhaar, PAN, or Passport (simulated in the system).
+Customer uploads documents like Aadhaar, PAN, or Passport 
 
 **System validation
 **
-The system validates file formats and required fields.
+The system validates file formats and required fields.(currently manually we are doing)
 
 **Bank Admin approval
 **
@@ -27,9 +27,7 @@ Once KYC is approved, the system marks the user as verified.
 
 Audit logs are created automatically for review by the Auditor.
 
-
-⚙️ How it works
-
+**Original Flow**
 Customers register and upload their KYC documents.
 
 System validates basic document structure automatically.
