@@ -1,39 +1,77 @@
-SmartBank System
+# SmartBank KYC & Customer Management System
 
+This is a simple banking application backend built using **Python**, **Django**, and **Django-Ninja**. It allows customer registration, KYC document upload, and verification, along with audit logging of actions.
 
-The use case is Customer Signup
+---
 
-**Submit personal details**
+## Technologies Used
 
-Customer enters information like full name, date of birth, address, phone number, email, and password.
+- **Python 3.x**
+- **Django**
+- **Django-Ninja** (API framework)
+- **SQLite 
+- **Pydantic** (for request validation in Ninja)
+- **JWT Authentication** (custom JWT handler for user authentication)
 
-**Upload KYC documents
-**
-Customer uploads documents like Aadhaar, PAN, or Passport 
+---
 
-**System validation
-**
-The system validates file formats and required fields.(currently manually we are doing)
+## Models Overview
 
-**Bank Admin approval
-**
-Admin reviews KYC documents.
+### 1. **User**
+Custom user model extending Django's `AbstractUser` with additional fields:
+- `role` (customer, bank admin, auditor)
+- `phone_number`
+- `is_verified` (set after KYC approval)
+- Custom ManyToMany fields for `groups` and `user_permissions` to avoid reverse accessor clash.
 
-Approves valid documents.
+### 2. **CustomerProfile**
+Stores customer details:
+- `full_name`, `date_of_birth`, `address`, `city`, `state`, `pincode`
+- Linked to `User` via `OneToOneField`
+- `created_at` timestamp
 
-**User verified
-**
-Once KYC is approved, the system marks the user as verified.
+### 3. **KYCDocument**
+Stores uploaded KYC documents for customers:
+- `document_type` (Aadhaar, PAN, Passport)
+- `document_number`
+- `document_file`
+- `is_verified` (boolean)
+- Linked to `CustomerProfile` via `ForeignKey`
+- `uploaded_at` timestamp
 
-Audit logs are created automatically for review by the Auditor.
+### 4. **AuditLog**
+Tracks all actions by users:
+- `actor` (User performing the action)
+- `action` (description)
+- `timestamp`
+- `details` (JSON string for extra info)
 
-**Original Flow**
-Customers register and upload their KYC documents.
+---
 
-System validates basic document structure automatically.
+## API Endpoints
 
-Bank Admin reviews and approves KYC.
+### 1. `GET /hello/`
+Simple hello message for testing API connectivity.
 
-User account is verified after approval.
+### 2. `POST /customers/signup/`
+Registers a new customer.
 
-Auditors can check audit logs for any system action.
+**Request Schema:**
+```json
+{
+  "username": "john_doe",
+  "email": "john@example.com",
+  "phone_number": "9876543210",
+  "password": "securepassword",
+  "full_name": "John Doe",
+  "date_of_birth": "1990-01-01",
+  "address": "123 Main St",
+  "city": "CityName",
+  "state": "StateName",
+  "pincode": "123456"
+}
+
+### 1. `POST /upload/kyc/
+Upload a KYC document for the authenticated customer.  
+
+**Authentication:** JWT required.  
